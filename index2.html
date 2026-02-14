@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Surprise 💖</title>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Comic Sans MS', cursive;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    height: 100vh;
+    overflow: hidden;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+h1 {
+    margin-top: 15vh;
+    font-size: 40px;
+    text-shadow: 2px 2px 10px red;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: absolute;
+}
+
+#yesBtn {
+    background-color: #ff1e56;
+    color: white;
+    left: 40%;
+    top: 60%;
+}
+
+#noBtn {
+    background-color: white;
+    color: #ff1e56;
+}
+</style>
+</head>
+
+<body>
+
+<h1 id="question"></h1>
+
+<button id="yesBtn">Yes 💖</button>
+<button id="noBtn">No 😢</button>
+
+<audio id="bgMusic">
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
+</audio>
+
+<script>
+/* ========= NAME ========= */
+const name = new URLSearchParams(window.location.search).get("name") || "Kirti";
+document.getElementById("question").innerText =
+    "Will you be my Valentine, " + name + "? 💕";
+
+/* ========= NO BUTTON LOGIC ========= */
+const noBtn = document.getElementById("noBtn");
+
+// Place button safely at start
+function placeInitial() {
+    const maxX = window.innerWidth - noBtn.offsetWidth;
+    const maxY = window.innerHeight - noBtn.offsetHeight;
+
+    noBtn.style.left = maxX * 0.7 + "px";
+    noBtn.style.top = maxY * 0.6 + "px";
+}
+placeInitial();
+
+function moveNoButton() {
+    const padding = 20;
+
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+}
+
+// Move when hovered
+noBtn.addEventListener("mouseenter", moveNoButton);
+
+// Move when cursor gets close
+document.addEventListener("mousemove", (e) => {
+    const rect = noBtn.getBoundingClientRect();
+    const distance = Math.hypot(
+        e.clientX - (rect.left + rect.width / 2),
+        e.clientY - (rect.top + rect.height / 2)
+    );
+
+    if (distance < 120) {
+        moveNoButton();
+    }
+});
+
+// Prevent click completely
+noBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    moveNoButton();
+});
+
+/* ========= YES BUTTON ========= */
+const yesBtn = document.getElementById("yesBtn");
+
+yesBtn.addEventListener("click", () => {
+
+    const music = document.getElementById("bgMusic");
+    music.play();
+
+    setTimeout(() => {
+        music.pause();
+    }, 10000);
+
+    // Big Confetti 🎉
+    confetti({
+        particleCount: 300,
+        spread: 160,
+        origin: { y: 0.6 }
+    });
+
+    // Fireworks Burst 🎆
+    for (let i = 0; i < 25; i++) {
+        setTimeout(() => {
+            confetti({
+                particleCount: 60,
+                spread: 360,
+                startVelocity: 40,
+                origin: {
+                    x: Math.random(),
+                    y: Math.random() - 0.2
+                }
+            });
+        }, i * 200);
+    }
+
+    setTimeout(() => {
+        document.body.innerHTML = `
+            <div style="
+                height:100vh;
+                display:flex;
+                flex-direction:column;
+                justify-content:center;
+                align-items:center;
+                background:linear-gradient(135deg,#ff0844,#ffb199);
+                color:white;
+                text-align:center;
+            ">
+                <h1 style="font-size:55px;">YAYYYYY 💖💖💖</h1>
+                <p style="font-size:30px;">
+                    ${name}, you just made me the happiest person alive 🥰
+                </p>
+                <div style="font-size:60px;">❤️ 💕 💘 💝 💖</div>
+            </div>
+        `;
+    }, 2000);
+});
+</script>
+
+</body>
+</html>
