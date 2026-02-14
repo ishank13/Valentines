@@ -72,7 +72,7 @@ button {
 /* ========= NAME PERSONALIZATION ========= */
 const name = new URLSearchParams(window.location.search).get("name") || "Kirti";
 document.getElementById("question").innerText =
-    "Will you be my Valentine, " + name + "? 💕";
+    " " + name + ", Will you be my Valentine ? 💕";
 
 /* ========= IMPOSSIBLE NO BUTTON ========= */
 const noBtn = document.getElementById("noBtn");
@@ -160,7 +160,10 @@ yesBtn.addEventListener("click", () => {
             ">
                 <h1 style="font-size:55px;">YAYYYYY 💖💖💖</h1>
                 <p style="font-size:30px;">
-                    ${name}, you just made me the happiest person alive 🥰
+                    you just made me the happiest person alive 🥰
+                </p>
+                <p style="font-size:30px;">
+                    I LOVE YOUU ❤️
                 </p>
                 <div style="font-size:60px;">❤️ 💕 💘 💝 💖</div>
             </div>
