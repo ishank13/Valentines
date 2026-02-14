@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Surprise 💖</title>
+
+<!-- Confetti Library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Comic Sans MS', cursive;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    text-align: center;
+    color: white;
+}
+
+.container {
+    position: relative;
+}
+
+h1 {
+    font-size: 40px;
+    text-shadow: 2px 2px 10px red;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 20px;
+    transition: 0.3s;
+}
+
+#yesBtn {
+    background-color: #ff1e56;
+    color: white;
+}
+
+#noBtn {
+    background-color: white;
+    color: #ff1e56;
+    position: absolute;
+}
+
+/* Floating hearts */
+.hearts {
+    position: absolute;
+    font-size: 30px;
+    animation: float 4s infinite ease-in-out;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-25px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Fireworks effect */
+.firework {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: yellow;
+    border-radius: 50%;
+    animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(10); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1 id="question"></h1>
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 😢</button>
+</div>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3">
+</audio>
+
+<script>
+/* ========= NAME PERSONALIZATION ========= */
+const name = new URLSearchParams(window.location.search).get("name") || "Kirti";
+document.getElementById("question").innerText =
+    "Will you be my Valentine, " + name + "? 💕";
+
+/* ========= RUNNING NO BUTTON ========= */
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("click", moveButton);
+
+function moveButton() {
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+}
+
+/* ========= YES BUTTON MAGIC ========= */
+const yesBtn = document.getElementById("yesBtn");
+yesBtn.addEventListener("click", celebrate);
+
+function celebrate() {
+
+    // Start Music (browser requires user interaction)
+    document.getElementById("bgMusic").play();
+
+    // Confetti Blast 🎉
+    confetti({
+        particleCount: 200,
+        spread: 120,
+        origin: { y: 0.6 }
+    });
+
+    // Fireworks 🎆
+    for (let i = 0; i < 20; i++) {
+        const firework = document.createElement("div");
+        firework.className = "firework";
+        firework.style.left = Math.random() * window.innerWidth + "px";
+        firework.style.top = Math.random() * window.innerHeight + "px";
+        document.body.appendChild(firework);
+
+        setTimeout(() => {
+            firework.remove();
+        }, 1000);
+    }
+
+    // Replace page with celebration screen
+    setTimeout(() => {
+        document.body.innerHTML = `
+            <div style="
+                height:100vh;
+                display:flex;
+                flex-direction:column;
+                justify-content:center;
+                align-items:center;
+                background:linear-gradient(135deg,#ff0844,#ffb199);
+                color:white;
+                text-align:center;
+            ">
+                <h1 style="font-size:55px;">YAYYYYY 💖💖💖</h1>
+                <p style="font-size:30px;">
+                    ${name}, you just made me the happiest person alive 🥰
+                </p>
+                <div style="font-size:60px;">❤️ 💕 💘 💝 💖</div>
+            </div>
+        `;
+    }, 1500);
+}
+</script>
+
+</body>
+</html>
